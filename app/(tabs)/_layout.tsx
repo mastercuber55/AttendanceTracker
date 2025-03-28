@@ -1,45 +1,54 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import React, { useMemo } from 'react';
+import { useTheme } from 'react-native-paper';
 
 import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { Icon } from 'react-native-paper';
+import * as NavigationBar from 'expo-navigation-bar';
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+const data = [
+  { name: "index", label: "Dashboard", icon: "view-dashboard"},
+  { name: "alltasks", label: "All Tasks", icon: "playlist-check" },
+  { name: "create", label: "Create", icon: "playlist-plus"},
+  { name: "calendar", label: "Calendar", icon: "calendar-check"},
+  { name: "settings", label: "Settings", icon: "cog" }
+]
+export default function Layout() {
+  const theme = useTheme();
+  
+  NavigationBar.setBackgroundColorAsync(theme.colors.surface);
+
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.onSurfaceVariant,
+        tabBarStyle: {
+          backgroundColor: theme.colors.surface,
+          borderTopWidth: 0,
+          elevation: 4, // Shadow effect on Android
+          shadowOpacity: 0.1, // Light shadow on iOS
+          height: 60,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
+        },
         headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
+        tabBarButton: HapticTab, // Custom button for haptic feedback
+      }}
+    >
+      {data.map(({ name, label, icon }) => (
+        <Tabs.Screen
+          key={name}
+          name={name}
+          options={{
+            tabBarLabel: label,
+            tabBarIcon: ({ color, size }) => <Icon source={icon} theme={theme} size={24} />,
+          }}
+        />
+      ))}
     </Tabs>
   );
 }
