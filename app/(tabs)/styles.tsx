@@ -21,6 +21,7 @@ export function stylesInit(theme: Theme) {
       fontSize: 64,
       color: theme.colors.onSurface,
       fontWeight: "bold",
+      textAlign: "center"
     },
     subtitle: {
       fontSize: 32,

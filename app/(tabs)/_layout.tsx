@@ -8,10 +8,7 @@ import * as NavigationBar from 'expo-navigation-bar';
 
 const data = [
   { name: "index", label: "Dashboard", icon: "view-dashboard"},
-  { name: "alltasks", label: "All Tasks", icon: "playlist-check" },
-  { name: "create", label: "Create", icon: "playlist-plus"},
   { name: "calendar", label: "Calendar", icon: "calendar-check"},
-  { name: "settings", label: "Settings", icon: "cog" }
 ]
 export default function Layout() {
   const theme = useTheme();
