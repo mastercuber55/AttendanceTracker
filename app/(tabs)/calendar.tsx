@@ -1,5 +1,5 @@
 import { Text, SafeAreaView } from 'react-native';
-import { stylesInit } from './styles';
+import { stylesInit } from '../styles';
 import { useMemo } from 'react';
 import { useTheme } from 'react-native-paper';
 

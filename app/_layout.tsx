@@ -32,7 +32,7 @@ function AppNavigator() {
               style={{ width: 24, height: 24, marginRight: 8 }}
             />
           },
-          headerTitle: "Academic Tracker",
+          headerTitle: "Attendance Tracker",
           headerTintColor: theme.colors.onSurface,
           headerShadowVisible: true,
         }}

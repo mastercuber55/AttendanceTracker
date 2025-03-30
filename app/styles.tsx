@@ -15,39 +15,33 @@ export function stylesInit(theme: Theme) {
     container: {
       ...center,
       flex: 1,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.dark ? "#121212" : "#F5F5F5", // Dark mode vs Light mode
+      paddingBottom: 48
     },
     title: {
-      fontSize: 64,
       color: theme.colors.onSurface,
-      fontWeight: "bold",
+      // fontWeight: "bold",
       textAlign: "center"
     },
-    subtitle: {
-      fontSize: 32,
-      color: theme.colors.onSurface,
-      fontWeight: "bold",
-    },
     text: {
-      fontSize: 24,
       color: theme.colors.onSurface,
     },
     cardContainer: {
-      width: '100%',
-      // height: '100%',
-      gridAutoRows: '1fr',
-      gridTemplateRows: '1fr 1fr',
-      gap: "2.5%",
+      width: "100%",
+      gap: "15",
       ...center,
     },
     card: {
-      minHeight: "20%",
+      // minHeight: "20%",
       width: '80%',
-      height: '25%',
-      backgroundColor: theme.colors.secondaryContainer,
       borderRadius: 10,
       padding: 10,
-      ...center
     },
+    SegBtn: { 
+      borderRadius: 4, 
+      borderWidth: 2.5, 
+      borderColor: theme.colors.elevation.level2,
+      // backgroundColor: theme.colors.background
+    }
   });
 }

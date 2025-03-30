@@ -8,6 +8,7 @@ import * as NavigationBar from 'expo-navigation-bar';
 
 const data = [
   { name: "index", label: "Dashboard", icon: "view-dashboard"},
+  { name: "week", label: "Week", icon: "calendar-week" },
   { name: "calendar", label: "Calendar", icon: "calendar-check"},
 ]
 export default function Layout() {
@@ -26,7 +27,7 @@ export default function Layout() {
           borderTopWidth: 0,
           elevation: 4, // Shadow effect on Android
           shadowOpacity: 0.1, // Light shadow on iOS
-          height: 60,
+          height: 48, // Default is 49 LMFAO
         },
         tabBarLabelStyle: {
           fontSize: 12,
