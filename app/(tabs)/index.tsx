@@ -28,7 +28,7 @@ function HomeScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.cardContainer}>
         <Card style={styles.card}>
-            <Card.Title title="Current Attendance Percentage" titleStyle={{ textAlign: 'center' }}></Card.Title>
+            <Card.Title title="Current Attendance Percentage" titleStyle={{ textAlign: 'center' }}/>
             <Card.Content>
             <View style={{ position: 'relative', alignItems: 'center', justifyContent: 'center' }}>
               <PieChart widthAndHeight={256} series={series} cover={0.5} padAngle={0.05} />
@@ -39,7 +39,7 @@ function HomeScreen() {
             </Card.Content>
         </Card>
         <Card style={styles.card}>
-          <Card.Title title="Quick View and Actions"  titleStyle={{ textAlign: 'center' }}></Card.Title>
+          <Card.Title title="Quick View and Actions"  titleStyle={{ textAlign: 'center' }}/>
           <Card.Content>
             <Text style={styles.text} variant='bodyLarge'>Mark Today As</Text>
           </Card.Content>

@@ -14,7 +14,8 @@ const data = {
     "Already Absent": { color: "#F44336", icon: "close-circle-outline" },
     "Marked Present": { color: "#4CAF50", icon: "progress-check" },
     "Marked Absent": { color: "#F44336", icon: "progress-close" },
-    "Marked Must Go": { color: "#FFC107", icon: "progress-alert" }
+    "Marked Must Go": { color: "#FFC107", icon: "progress-alert" },
+    "Marked Holiday": { color: "#FFB74D", icon: "home-circle-outline" }
 };
 
 const status = {
@@ -23,7 +24,8 @@ const status = {
     "Wed": "Marked Present",
     "Thu": "Marked Absent",
     "Fri": "Marked Must Go",
-    "Sat": "Marked Present"
+    "Sat": "Marked Present",
+    "Sun": "Marked Holiday"
 };
 
 const InitialDate = 14
@@ -91,11 +93,7 @@ function WeekScreen() {
             </Card.Content>
         </Card>
         <Card style={styles.card}>
-            <Card.Title title="Decide your holidays." titleStyle={{ textAlign: 'center' }}/>
-            <Card.Content>
-                <Text style={styles.title}>Recommended that you take 2/6 Holidays</Text>
-            </Card.Content>
-            <View style={{ padding: 10 }}/>
+            <Card.Title title="Decide your holidays." subtitle="Recommended that you take 2/6 Holidays" titleStyle={{ textAlign: 'center' }} subtitleStyle={{ textAlign: 'center' }}/>
             <Card.Content style={{ gap: 5 }}>
                 {Object.entries(status).map(([day, state], index) => (
                     <Surface key={index} elevation={2} style={{ borderRadius: 8 }}>
