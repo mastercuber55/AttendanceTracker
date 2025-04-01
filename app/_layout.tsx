@@ -1,10 +1,11 @@
 import { Stack } from "expo-router";
-import { PaperProvider, useTheme, Divider } from "react-native-paper";
+import { PaperProvider, useTheme } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
-import { Text, Image, View } from "react-native";
+import { Image } from "react-native";
 
 export default function RootLayout() {
-  return (
+
+  return (  
     <PaperProvider>
       <AppNavigator />
       <StatusBar style="auto" />
@@ -13,7 +14,9 @@ export default function RootLayout() {
 }
 
 function AppNavigator() {
-  const theme = useTheme(); // Now it works because it's inside PaperProvider
+  const theme = useTheme();
+
+  // NavigationBar.setBackgroundColorAsync(theme.colors.surface);
 
   return (
     <Stack>
@@ -37,6 +40,8 @@ function AppNavigator() {
           headerShadowVisible: true,
         }}
       />
+      <Stack.Screen name="signUp" options={{ headerShown: false }}/>
+      <Stack.Screen name="logIn" options={{ headerShown: false }}/>
       <Stack.Screen name="+not-found" />
     </Stack>
   );

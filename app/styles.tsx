@@ -18,9 +18,8 @@ export function stylesInit(theme: Theme) {
       backgroundColor: theme.dark ? "#121212" : "#F5F5F5", // Dark mode vs Light mode
       paddingBottom: 48
     },
-    title: {
+    textCentered: {
       color: theme.colors.onSurface,
-      // fontWeight: "bold",
       textAlign: "center"
     },
     text: {

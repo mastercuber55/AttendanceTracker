@@ -1,5 +1,4 @@
-import { Tabs } from 'expo-router';
-import React, { useMemo } from 'react';
+import { Redirect, Tabs } from 'expo-router';
 import { useTheme } from 'react-native-paper';
 
 import { HapticTab } from '@/components/HapticTab';
@@ -12,10 +11,10 @@ const data = [
   { name: "calendar", label: "Calendar", icon: "calendar-check"},
 ]
 export default function Layout() {
-  const theme = useTheme();
-  
-  NavigationBar.setBackgroundColorAsync(theme.colors.surface);
 
+  return <Redirect href="/signUp"/>
+  
+  const theme = useTheme();
 
   return (
     <Tabs

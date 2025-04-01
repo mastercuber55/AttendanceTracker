@@ -1,6 +1,6 @@
-import { Button, FlatList, ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { withTheme, Card, Text, List, Surface, PaperProvider, Portal, Modal, Icon  } from 'react-native-paper';
+import { withTheme, Card, Text, List, Surface, Portal, Modal, Icon  } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
 import { stylesInit } from '../styles';
 import { useMemo, useState } from 'react';
@@ -52,8 +52,6 @@ const status = {
   "30": "Already Absent",
   "31": "Marked Present"
 };
-
-const InitialDate = 1
  
 function WeekScreen() {
 
@@ -62,7 +60,7 @@ function WeekScreen() {
   const styles = useMemo(() => stylesInit(theme), [theme]);
 
   const [visible, setVisible] = useState(false);
-  const [day, setDay] = useState("Mon")
+  const [date, setDate] = useState<{ dateString: string; day: number; month: number; year: number }>()
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
@@ -81,18 +79,18 @@ function WeekScreen() {
         <Portal>
           <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.cardContainer} theme={{ colors: { backdrop: "rgba(0, 0, 0, 0.5)" }}}>
             <Card style={styles.card}>
-              <Card.Title title={`Mark ${InitialDate + Object.keys(status).indexOf(day)}th - ${day} as`} titleStyle={{ textAlign: 'center' }}/>
+              <Card.Title title={`Mark ${date?.day} as`} titleStyle={{ textAlign: 'center' }}/>
               <Card.Content style={{ gap: 5 }}>
                 {Object.entries(data)
                   .filter(([key]) => key.startsWith("Marked"))
                   .map(([key, value], index) => (
                     <Surface key={index} elevation={2} style={{ borderRadius: 8 }}>
-                        <List.Item
-                          title={key.split(' ').slice(1).join(' ')}
-                          titleStyle={{ textAlign: 'center' }}
-                          left={props => <List.Icon {...props} icon={value.icon} color={value.color} />}
-                          onPress={() => console.log(`Selected: ${key}`)}
-                        />
+                      <List.Item
+                        title={key.split(' ').slice(1).join(' ')}
+                        titleStyle={{ textAlign: 'center' }}
+                        left={props => <List.Icon {...props} icon={value.icon} color={value.color} />}
+                        onPress={() => console.log(`Selected: ${key}`)}
+                      />
                     </Surface>
                 ))}
               </Card.Content>
@@ -154,7 +152,7 @@ function WeekScreen() {
                         }}
                         onTouchEnd={() => {
                           setVisible(true);
-                            setDay(day);
+                            setDate(date);
                           }}
                           >
                         <View style={{ position: "absolute", top: 20, left: 20 }}>
@@ -173,15 +171,6 @@ function WeekScreen() {
                       </Surface>
                     </View>
                   )
-                    // {
-                    // "date": {
-                    //   "dateString": "2025-04-05",
-                    //   "day": 5,
-                    //   "month": 4,
-                    //   "year": 2025
-                    // },
-                    // "state": "disabled",
-                    // }
                 }}
 
                 markingType='custom'
@@ -195,42 +184,6 @@ function WeekScreen() {
                 }}
                 onDayPress={console.log}
               />
-                {/* <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5, justifyContent: 'center' }}>
-                {Object.entries(status).map(([day, state], index) => (
-                  <Surface
-                  key={index}
-                  elevation={2}
-                  style={{
-                    width: 60,
-                    height: 60,
-                    borderRadius: 8,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: `${data[state as keyof typeof data].color}90`, // Adding transparency
-                  }}
-                  onTouchEnd={() => {
-                    setVisible(true);
-                    setDay(day);
-                  }}
-                  >
-                  <Icon
-                    source={data[state as keyof typeof data].icon}
-                    color={data[state as keyof typeof data].color} 
-                    size={24}
-                  />
-                  <Text style={{ 
-                    fontSize: 16, 
-                    fontWeight: 'bold', 
-                    color: 'white', // Setting font color to white
-                    position: 'absolute', 
-                    bottom: 5, 
-                    right: 5 
-                  }}>
-                    {`${InitialDate + index}`}
-                  </Text>
-                  </Surface>
-                ))}
-                </ScrollView> */}
             </Card.Content>
         </Card>
       </View>

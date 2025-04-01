@@ -1,6 +1,6 @@
-import { Button, View } from 'react-native';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { withTheme, Card, Text, List, Surface, PaperProvider, Portal, Modal  } from 'react-native-paper';
+import { withTheme, Card, List, Surface, Portal, Modal  } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
 import { stylesInit } from '../styles';
 import { useMemo, useState } from 'react';
