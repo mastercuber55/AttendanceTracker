@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 const AuthContext = createContext()
+const URL = "https://attendancetrackerapi.netlify.app/.netlify/functions/"
 
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(null)
@@ -19,7 +20,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async({ username, password }) => {
         
-        const res = await fetch("https://attendancetrackerapi.netlify.app/.netlify/functions/login", {
+        const res = await fetch(URL + "login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password }),
@@ -40,7 +41,7 @@ export const AuthProvider = ({ children }) => {
 
     const signup = async({ username, password }) => {
         
-        const res = await fetch("https://attendancetrackerapi.netlify.app/.netlify/functions/signup", {
+        const res = await fetch(URL + signup, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password }),

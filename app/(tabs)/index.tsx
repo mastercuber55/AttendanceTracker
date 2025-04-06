@@ -5,7 +5,7 @@ import { useTheme } from 'react-native-paper';
 import { stylesInit } from '../styles';
 import { useMemo, useState } from 'react';
 import PieChart from 'react-native-pie-chart'
-import { useAuth } from '@/contexts/auth';
+import { useAuth } from '@/utils/auth';
 import { useRouter } from 'expo-router';
 
 export default withTheme(HomeScreen)

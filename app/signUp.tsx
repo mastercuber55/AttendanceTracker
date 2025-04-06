@@ -5,7 +5,7 @@ import { useTheme } from 'react-native-paper';
 import { stylesInit } from './styles';
 import { useMemo, useState } from 'react';
 import { useRouter } from 'expo-router';
-import { useAuth } from '@/contexts/auth';
+import { useAuth } from '@/utils/auth';
 
 export default withTheme(Login)
 

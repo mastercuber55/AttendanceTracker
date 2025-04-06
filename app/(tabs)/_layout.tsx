@@ -3,7 +3,7 @@ import { useTheme } from 'react-native-paper';
 import { HapticTab } from '@/components/HapticTab';
 import { Icon } from 'react-native-paper';
 import { setBackgroundColorAsync } from 'expo-navigation-bar';
-import { useAuth } from '@/contexts/auth';
+import { useAuth } from '@/utils/auth';
 import { useEffect } from 'react';
 
 const data = [

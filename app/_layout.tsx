@@ -1,4 +1,4 @@
-import { AuthProvider } from "@/contexts/auth";
+import { AuthProvider } from "@/utils/auth";
 import { Slot, Stack } from "expo-router";
 import { Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
@@ -9,8 +9,6 @@ import { useEffect } from "react";
 export default function RootLayout() {
 
   const theme = useTheme()
-
-  
   
   return (  
     <AuthProvider>
