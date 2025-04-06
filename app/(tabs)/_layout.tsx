@@ -1,9 +1,7 @@
-import { Redirect, Tabs } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { useTheme } from 'react-native-paper';
-
 import { HapticTab } from '@/components/HapticTab';
 import { Icon } from 'react-native-paper';
-import * as NavigationBar from 'expo-navigation-bar';
 
 const data = [
   { name: "index", label: "Dashboard", icon: "view-dashboard"},
@@ -12,8 +10,6 @@ const data = [
 ]
 export default function Layout() {
 
-  return <Redirect href="/signUp"/>
-  
   const theme = useTheme();
 
   return (

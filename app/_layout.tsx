@@ -1,22 +1,23 @@
+import { AuthProvider } from "@/contexts/auth";
 import { Stack } from "expo-router";
-import { PaperProvider, useTheme } from "react-native-paper";
-import { StatusBar } from "expo-status-bar";
 import { Image } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { PaperProvider, useTheme } from "react-native-paper";
 
 export default function RootLayout() {
 
   return (  
-    <PaperProvider>
-      <AppNavigator />
-      <StatusBar style="auto" />
-    </PaperProvider>
+    <AuthProvider>
+      <PaperProvider>
+        <AppNavigator/>
+        <StatusBar style="auto" />
+      </PaperProvider>
+    </AuthProvider>
   );
 }
 
 function AppNavigator() {
-  const theme = useTheme();
-
-  // NavigationBar.setBackgroundColorAsync(theme.colors.surface);
+  const theme = useTheme()
 
   return (
     <Stack>
@@ -40,8 +41,6 @@ function AppNavigator() {
           headerShadowVisible: true,
         }}
       />
-      <Stack.Screen name="signUp" options={{ headerShown: false }}/>
-      <Stack.Screen name="logIn" options={{ headerShown: false }}/>
       <Stack.Screen name="+not-found" />
     </Stack>
   );
