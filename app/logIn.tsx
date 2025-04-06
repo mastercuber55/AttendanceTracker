@@ -27,8 +27,11 @@ function Login() {
   const [errorType, setErrorType] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const validate = async() => {
+  const handler = async() => {
 
+    setErrorMessage("")
+    setErrorType("")
+    
     const usernameRegex = /^[a-zA-Z][a-zA-Z0-9 ]{2,}[a-zA-Z0-9]$/;
     const isUsernameValid = usernameRegex.test(username);
     
@@ -46,22 +49,15 @@ function Login() {
       setErrorMessage("The password must be atleast 6 characters long, must have, atleast a uppercase letter, atleast a lowercase letter, atleast a number, atleast a special character. 🤓")
       return;
     }
-  }
 
-  const handler = async() => {
-
-    setErrorMessage("")
-    setErrorType("")
-    validate()
     if(errorType != "") return;
 
     setLoading(true)
     
-    const [data, error] = auth.login({ username, password })
+    const [data, error] = await auth.login({ username, password })
     
     if(data) {
-      setErrorType("authenticatedSuccess")
-      setErrorMessage("Authentication was a success! 💅")
+      router.replace("/(tabs)")
     }
 
     if(error) {

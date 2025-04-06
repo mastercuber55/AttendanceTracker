@@ -1,7 +1,10 @@
-import { Tabs } from 'expo-router';
+import { Redirect, Tabs } from 'expo-router';
 import { useTheme } from 'react-native-paper';
 import { HapticTab } from '@/components/HapticTab';
 import { Icon } from 'react-native-paper';
+import { setBackgroundColorAsync } from 'expo-navigation-bar';
+import { useAuth } from '@/contexts/auth';
+import { useEffect } from 'react';
 
 const data = [
   { name: "index", label: "Dashboard", icon: "view-dashboard"},
@@ -9,8 +12,14 @@ const data = [
   { name: "calendar", label: "Calendar", icon: "calendar-check"},
 ]
 export default function Layout() {
-
+  
   const theme = useTheme();
+  const { token, loading, logout } = useAuth();
+
+  // logout()
+
+  if (loading) return null; // or a loading spinner
+  if (!token) return <Redirect href="/login" />;
 
   return (
     <Tabs

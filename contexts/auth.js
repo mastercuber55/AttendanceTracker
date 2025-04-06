@@ -29,6 +29,26 @@ export const AuthProvider = ({ children }) => {
 
           if (res.ok) {
             data = await res.json()
+            await AsyncStorage.setItem("authToken", data.token) 
+          } else { 
+            error = await res.text()
+          }
+        return [data, error];
+    }
+
+    const signup = async({ username, password }) => {
+        
+        const res = await fetch("https://attendancetrackerapi.netlify.app/.netlify/functions/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password }),
+          });
+          
+          let data = null
+          let error = null
+
+          if (res.ok) {
+            data = await res.json()
             await AsyncStorage.setItem("authToken", newToken) 
       
           } else { 
@@ -44,7 +64,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ token, loading, login, logout }}>
+        <AuthContext.Provider value={{ token, loading, login, signup, logout }}>
             { children }
         </AuthContext.Provider>
     )

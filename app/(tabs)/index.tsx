@@ -1,10 +1,12 @@
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { withTheme, Card, Text, SegmentedButtons, Surface, List  } from 'react-native-paper';
+import { withTheme, Card, Text, SegmentedButtons, Surface, List, FAB  } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
 import { stylesInit } from '../styles';
 import { useMemo, useState } from 'react';
 import PieChart from 'react-native-pie-chart'
+import { useAuth } from '@/contexts/auth';
+import { useRouter } from 'expo-router';
 
 export default withTheme(HomeScreen)
 
@@ -12,6 +14,9 @@ const seriesStyle = { fill: "white", fontWeight: "bold", fontSize: 15 }
 
 function HomeScreen() {
 
+  const { logout } = useAuth()
+
+  const router = useRouter()
   const theme = useTheme();
   const styles = useMemo(() => stylesInit(theme), [theme]);
 
@@ -66,6 +71,21 @@ function HomeScreen() {
             </Surface>
         </Card>
       </View>
+      <FAB
+        icon="logout"
+        style={{ 
+          position: "absolute",
+          alignSelf: "flex-end",
+          margin: 10,
+          bottom: 5,
+          right: 5
+        }}
+        variant="surface"
+        onPress={() => {
+          logout()
+          router.replace("/login")
+        }}
+      />
     </SafeAreaView>
   );
 }
