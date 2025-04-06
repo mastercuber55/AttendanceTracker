@@ -16,9 +16,11 @@ export default function Layout() {
   const theme = useTheme();
   const { token, loading, logout } = useAuth();
 
-  // logout()
+  useEffect(() => {
+    setBackgroundColorAsync(theme.colors.background);
+  }, [theme])
 
-  if (loading) return null; // or a loading spinner
+  if (loading) return null; 
   if (!token) return <Redirect href="/login" />;
 
   return (

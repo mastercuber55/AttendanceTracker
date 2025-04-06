@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
             const storedToken = await AsyncStorage.getItem("authToken")
             setToken(storedToken)
             setLoading(false)
+            
         }
         loadToken()
     }, [])
@@ -30,10 +31,11 @@ export const AuthProvider = ({ children }) => {
           if (res.ok) {
             data = await res.json()
             await AsyncStorage.setItem("authToken", data.token) 
+            return [data, error];
           } else { 
             error = await res.text()
+            return [data, error];
           }
-        return [data, error];
     }
 
     const signup = async({ username, password }) => {
@@ -49,14 +51,12 @@ export const AuthProvider = ({ children }) => {
 
           if (res.ok) {
             data = await res.json()
-            await AsyncStorage.setItem("authToken", newToken) 
-      
+            await AsyncStorage.setItem("authToken", data.token) 
+            return [data, error];
           } else { 
-      
             error = await res.text()
+            return [data, error];
           }
-    
-        return [data, error];
     }
 
     const logout = async() => {

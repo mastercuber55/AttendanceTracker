@@ -5,26 +5,32 @@ import { useTheme } from 'react-native-paper';
 import { stylesInit } from './styles';
 import { useMemo, useState } from 'react';
 import { useRouter } from 'expo-router';
+import { useAuth } from '@/contexts/auth';
 
-export default withTheme(Signup)
+export default withTheme(Login)
 
 
-function Signup() {
+function Login() {
 
   const router = useRouter()
   const theme = useTheme();
+  const auth = useAuth()
   const styles = useMemo(() => stylesInit(theme), [theme]);
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
+  const [repassword, setRepassword] = useState("")
 
   const [showPassword, setShowPassword] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
   const [errorType, setErrorType] = useState("")
+  const [loading, setLoading] = useState(false)
 
-  const validate = async() => {
+  const handler = async() => {
 
+    setErrorMessage("")
+    setErrorType("")
+    
     const usernameRegex = /^[a-zA-Z][a-zA-Z0-9 ]{2,}[a-zA-Z0-9]$/;
     const isUsernameValid = usernameRegex.test(username);
     
@@ -34,55 +40,38 @@ function Signup() {
       return;
     }
 
-    if(password != confirmPassword) {
+    if(password != repassword) {
       setErrorType("passwordError")
-      setErrorMessage(`The passwords do not match. 😔☝`)
+      setErrorMessage("The passwords do not match. 😔☝")
       return;
     }
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
     const isPasswordValid = passwordRegex.test(password)
-
+    
     if(!isPasswordValid) {
       setErrorType("passwordError")
       setErrorMessage("The password must be atleast 6 characters long, must have, atleast a uppercase letter, atleast a lowercase letter, atleast a number, atleast a special character. 🤓")
       return;
     }
 
-    const res = await fetch("https://attendancetrackerapi.netlify.app/.netlify/functions/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
+    if(errorType != "") return;
 
-    if (res.ok) {
-
-      const data = await res.json(); 
-
-      const token = data.token; 
-      console.log("Token:", token);
-      setErrorType("authenticatedSuccess")
-      setErrorMessage("Authentication was a success! 💅")
-    } else { 
-
-      const text = await res.text()
-      
-      setErrorType("authError")
-      
-      if(text == "already exists")
-        setErrorMessage("The user already exists, perhaps you wanna login?? ")
+    setLoading(true)
+    
+    const [data, error] = await auth.signup({ username, password })
+    
+    if(data) {
+      router.replace("/(tabs)")
     }
 
-  }
+    if(error) {
+      setErrorType("authError")
+      if(error == "already exists")
+        setErrorMessage("Seems like the account already exists, perhaps you wanted to login??. 😅")
+    }
 
-  const handler = async() => {
-
-    setErrorMessage("")
-    setErrorType("")
-    validate()
-
-    if(errorType != "")
-      return
+    setLoading(false)
     
   }
   
@@ -99,7 +88,7 @@ function Signup() {
       </View>
       <View style={styles.cardContainer}>
         <Card style={styles.card}>
-          <Card.Title title="Create an account" titleStyle={{ textAlign: 'center' }} titleVariant='titleLarge'/>
+          <Card.Title title="Create an account." titleStyle={{ textAlign: 'center' }} titleVariant='titleLarge'/>
           {errorType != "" && (
             <HelperText padding="normal" type="error" visible={errorType != ""} style={{ alignSelf: "center" }}>
               {errorMessage}
@@ -109,15 +98,14 @@ function Signup() {
             <TextInput
               mode="outlined"
               label="Enter your beloved username."
-              placeholder='sosukeaizen'
+              placeholder="sosukeaizen"
               onChangeText={setUsername}
               error={errorType == "usernameError"}
             />
             <TextInput
               mode="outlined"
-              secureTextEntry={!showPassword}
               label="Enter your magical password."
-              placeholder='projectIchigo4290'
+              placeholder="projectIchigo4290"
               onChangeText={setPassword}
               error={errorType == "passwordError"}
               right={
@@ -126,18 +114,15 @@ function Signup() {
             />
             <TextInput
               mode="outlined"
-              secureTextEntry={!showPassword}
               label="Confirm your magical password."
-              placeholder='projectIchigo4290'
-              onChangeText={setConfirmPassword}
+              placeholder="projectIchigo4290"
+              onChangeText={setRepassword}
               error={errorType == "passwordError"}
               right={
                 <TextInput.Icon icon="eye" onPress={() => setShowPassword(!showPassword)}/>
               }
             />
-            {/* <Divider text="OR" theme={theme} percentage="100%"/> */}
-            <Button mode="contained-tonal" style={{ borderRadius: 4, marginTop: 20 }} onPress={handler}>Sign Up</Button>
-            {/* <Button mode="contained-tonal" style={{ borderRadius: 4, marginTop: 5 }}>Sign Up With Google</Button> */}
+            <Button mode="contained-tonal" style={{ borderRadius: 4, marginTop: 20 }} loading={loading} onPress={handler}>Sign Up</Button>
             <Text style={{ alignSelf: "center", paddingTop: 10 }} onPress={() => router.navigate("/login")}>
               Looking to login into your existing account? Login.
             </Text>

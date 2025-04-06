@@ -1,14 +1,17 @@
-import { AuthProvider, useAuth } from "@/contexts/auth";
-import { Slot, Stack, useRouter } from "expo-router";
+import { AuthProvider } from "@/contexts/auth";
+import { Slot, Stack } from "expo-router";
 import { Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { PaperProvider, useTheme } from "react-native-paper";
 import { setBackgroundColorAsync } from "expo-navigation-bar";
 import { useEffect } from "react";
-import { useRoute } from "@react-navigation/native";
 
 export default function RootLayout() {
 
+  const theme = useTheme()
+
+  
+  
   return (  
     <AuthProvider>
       <PaperProvider>
@@ -22,7 +25,7 @@ export default function RootLayout() {
 function AppNavigator() {
 
   const theme = useTheme()  
-
+  
   return (
     <Stack>
       <Stack.Screen name="login" options={{  headerShown:false }}/>

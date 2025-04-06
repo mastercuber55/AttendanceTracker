@@ -4,9 +4,7 @@ import { withTheme, Card, Text, TextInput, Button, HelperText  } from 'react-nat
 import { useTheme } from 'react-native-paper';
 import { stylesInit } from './styles';
 import { useMemo, useState } from 'react';
-import Divider from '@/components/Divider';
 import { useRouter } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '@/contexts/auth';
 
 export default withTheme(Login)
@@ -107,9 +105,7 @@ function Login() {
                 <TextInput.Icon icon="eye" onPress={() => setShowPassword(!showPassword)}/>
               }
             />
-            {/* <Divider text="OR" theme={theme} percentage="100%"/> */}
             <Button mode="contained-tonal" style={{ borderRadius: 4, marginTop: 20 }} loading={loading} onPress={handler}>Log In</Button>
-            {/* <Button mode="contained-tonal" style={{ borderRadius: 4, marginTop: 5 }}>Sign Up With Google</Button> */}
             <Text style={{ alignSelf: "center", paddingTop: 10 }} onPress={() => router.navigate("/signup")}>
               Not even have an account yet? Sign Up!! 😭😭
             </Text>

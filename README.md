@@ -28,7 +28,7 @@ Here’s a quick look at what it’s all about:
 
 ## Got Questions?
 
-Ping me on Discord: **mastercuber55**  
+Lemme know on Discord: **mastercuber55**  
 I’m always around to help or just chat about cool stuff.
 
 Stay awesome and keep tracking! 🚀
