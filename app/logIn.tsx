@@ -9,7 +9,6 @@ import { useAuth } from '@/utils/auth';
 
 export default withTheme(Login)
 
-
 function Login() {
 
   const router = useRouter()
@@ -62,6 +61,10 @@ function Login() {
       setErrorType("authError")
       if(error == "Invalid email or password")
         setErrorMessage("Either the username or password was wrong. 😅")
+      else {
+        setErrorMessage("idk error occured")
+        console.log(error)
+      }
     }
 
     setLoading(false)

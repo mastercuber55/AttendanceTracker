@@ -6,6 +6,7 @@ import { stylesInit } from '../styles';
 import { useMemo, useState } from 'react';
 import PieChart from 'react-native-pie-chart'
 import { useAuth } from '@/utils/auth';
+import useProfile from '@/utils/useProfile';
 import { useRouter } from 'expo-router';
 
 export default withTheme(HomeScreen)
@@ -15,6 +16,7 @@ const seriesStyle = { fill: "white", fontWeight: "bold", fontSize: 15 }
 function HomeScreen() {
 
   const { logout } = useAuth()
+  const profile = useProfile()
 
   const router = useRouter()
   const theme = useTheme();
@@ -51,7 +53,11 @@ function HomeScreen() {
           <Surface elevation={2} style={{ borderRadius: 8 }}>
           <SegmentedButtons
             value={today}
-            onValueChange={setToday}
+            onValueChange={text => {
+              const date = new Date().toISOString().split('T')[0];
+              setToday(text)
+              profile.setDate(date, text).then(console.log)
+            }}
             style={{ width: "100%" }}
             buttons={[
               { value: 'present', label: 'Present', icon: "checkbox-marked-circle-outline", style: styles.SegBtn, checkedColor: theme.colors.primary, uncheckedColor: theme.colors.onSurface },
