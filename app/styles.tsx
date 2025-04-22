@@ -1,14 +1,20 @@
-import { StyleSheet, FlexAlignType } from 'react-native';
+import { StyleSheet, FlexAlignType } from "react-native";
 import { MD3Theme as Theme } from "react-native-paper";
 
 const center: {
-  justifyContent: 'center' | 'flex-start' | 'flex-end' | 'space-between' | 'space-around' | 'space-evenly' | undefined,
-  alignItems: FlexAlignType,
-
+  justifyContent:
+    | "center"
+    | "flex-start"
+    | "flex-end"
+    | "space-between"
+    | "space-around"
+    | "space-evenly"
+    | undefined;
+  alignItems: FlexAlignType;
 } = {
-  justifyContent: 'center',
-  alignItems: 'center',
-}
+  justifyContent: "center",
+  alignItems: "center",
+};
 
 export function stylesInit(theme: Theme) {
   return StyleSheet.create({
@@ -16,11 +22,11 @@ export function stylesInit(theme: Theme) {
       ...center,
       flex: 1,
       backgroundColor: theme.dark ? "#121212" : "#F5F5F5", // Dark mode vs Light mode
-      paddingBottom: 48
+      paddingBottom: 48,
     },
     textCentered: {
       color: theme.colors.onSurface,
-      textAlign: "center"
+      textAlign: "center",
     },
     text: {
       color: theme.colors.onSurface,
@@ -32,15 +38,15 @@ export function stylesInit(theme: Theme) {
     },
     card: {
       // minHeight: "20%",
-      width: '80%',
+      width: "80%",
       borderRadius: 10,
       padding: 10,
     },
-    SegBtn: { 
-      borderRadius: 4, 
-      borderWidth: 2.5, 
+    SegBtn: {
+      borderRadius: 4,
+      borderWidth: 2.5,
       borderColor: theme.colors.elevation.level2,
       // backgroundColor: theme.colors.background
-    }
+    },
   });
 }

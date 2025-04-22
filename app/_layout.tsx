@@ -1,19 +1,18 @@
-import { AuthProvider } from "@/utils/auth";
 import { Slot, Stack } from "expo-router";
 import { Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { PaperProvider, useTheme } from "react-native-paper";
 import { setBackgroundColorAsync } from "expo-navigation-bar";
 import { useEffect } from "react";
+import { AuthProvider } from "@/utils/auth";
 
 export default function RootLayout() {
+  const theme = useTheme();
 
-  const theme = useTheme()
-  
-  return (  
+  return (
     <AuthProvider>
       <PaperProvider>
-        <Slot/>
+        <Slot />
         <StatusBar style="auto" />
       </PaperProvider>
     </AuthProvider>
@@ -21,26 +20,27 @@ export default function RootLayout() {
 }
 
 function AppNavigator() {
+  const theme = useTheme();
 
-  const theme = useTheme()  
-  
   return (
     <Stack>
-      <Stack.Screen name="login" options={{  headerShown:false }}/>
+      <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen
         name="(tabs)"
         options={{
-          headerStyle: { 
+          headerStyle: {
             backgroundColor: theme.colors.background,
           },
           headerTitleStyle: {
-            fontWeight: 'bold',
+            fontWeight: "bold",
           },
-          headerLeft: () =>   {
-            return <Image
-              source={require("../assets/images/icon.png")}
-              style={{ width: 24, height: 24, marginRight: 8 }}
-            />
+          headerLeft: () => {
+            return (
+              <Image
+                source={require("../assets/images/icon.png")}
+                style={{ width: 24, height: 24, marginRight: 8 }}
+              />
+            );
           },
           headerTitle: "Attendance Tracker",
           headerTintColor: theme.colors.onSurface,
