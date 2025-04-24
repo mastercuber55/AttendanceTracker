@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async ({ username, password }: Credentials) => {
-    const res = await fetch(process.env.EXPO_PUBLIC_URL + "login", {
+    const res = await fetch(`${process.env.EXPO_PUBLIC_URL}/login`, {
       method: "POST",
       body: JSON.stringify({ username, password }),
     });
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signup = async ({ username, password }: Credentials) => {
-    const res = await fetch(process.env.EXPO_PUBLIC_URL + "signup", {
+    const res = await fetch(`${process.env.EXPO_PUBLIC_URL}/signup`, {
       method: "POST",
       body: JSON.stringify({ username, password }),
     });
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider value={{ token, loading, login, signup, logout }}>
-      {children}
+      { children }
     </AuthContext.Provider>
   );
 };

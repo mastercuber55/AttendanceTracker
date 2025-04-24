@@ -9,12 +9,12 @@ export default function useProfile() {
 
   const setStatus = async (date: String, status: String) => {
     const res = await fetch(`${process.env.EXPO_PUBLIC_URL}/setStatus`, {
-      method: "POST",
+      method: "PATCH",
       headers,
       body: JSON.stringify({ date, status }),
     });
-    return await res.json();
+    return await res.text()
   };
 
-  return { setDate: setStatus };
+  return { setStatus };
 }

@@ -53,10 +53,12 @@ function HomeScreen() {
           <Surface elevation={2} style={{ borderRadius: 8 }}>
           <SegmentedButtons
             value={today}
-            onValueChange={text => {
+            onValueChange={async(text) => {
               const date = new Date().toISOString().split('T')[0];
-              setToday(text)
-              profile.setDate(date, text).then(console.log)
+              setToday(text) 
+
+              const data = await profile.setStatus(date, text)
+              console.log(data)
             }}
             style={{ width: "100%" }}
             buttons={[
