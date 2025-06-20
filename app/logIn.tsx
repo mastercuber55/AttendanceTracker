@@ -126,6 +126,7 @@ function Login() {
               error={errorType == "usernameError"}
             />
             <TextInput
+              secureTextEntry={!showPassword}
               mode="outlined"
               label="Enter your magical password."
               placeholder="projectIchigo@4290"

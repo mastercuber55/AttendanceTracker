@@ -1,20 +1,33 @@
 import { useAuth } from "./auth";
 
-export default function useProfile() {
-  const { token } = useAuth();
+const custoFetch = async(method: string, endpoint: string, body: any = {}) => {
+const { token } = useAuth();
 
   const headers = {
     Authorization: `Bearer ${token}`,
   };
 
+  const res = await fetch(`${process.env.EXPO_PUBLIC_URL}/${endpoint}`, {
+    method,
+    headers,
+    body: JSON.stringify(body),
+  });
+
+  return res
+}
+
+export default function useProfile() {
+  
+
   const setStatus = async (date: String, status: String) => {
-    const res = await fetch(`${process.env.EXPO_PUBLIC_URL}/setStatus`, {
-      method: "PATCH",
-      headers,
-      body: JSON.stringify({ date, status }),
-    });
+    const res = await custoFetch("PATCH", "setStatus", {date, status})
     return await res.text()
   };
 
-  return { setStatus };
+  const getAttendance = async() => {
+    const res = await custoFetch("GET", "getAttendance")
+    return await res.json()
+  }
+
+  return { setStatus, getAttendance };
 }

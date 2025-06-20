@@ -7,12 +7,13 @@ import {
   Surface,
   Portal,
   Modal,
+  FAB,
 } from "react-native-paper";
 import { useTheme } from "react-native-paper";
 import { stylesInit } from "../styles";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ProgressBar from "@/components/ProgressBar";
-import { green100 } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
+import useProfile from "@/utils/useProfile";
 
 export default withTheme(WeekScreen);
 const seriesStyle = { fill: "white", fontWeight: "bold", fontSize: 15 };
@@ -23,18 +24,18 @@ interface status {
 }
 
 const data: Record<string, status> = {
-  "Present": {
+  Present: {
     color: "#4CAF50",
     icon: "checkbox-marked-circle-outline",
   },
-  "Absent": { color: "#F44336", icon: "close-circle-outline" },
+  Absent: { color: "#F44336", icon: "close-circle-outline" },
   "Marked Present": { color: "#4CAF50", icon: "progress-check" },
   "Marked Absent": { color: "#F44336", icon: "progress-close" },
   "Must Go": { color: "#FFC107", icon: "progress-alert" },
-  "Holiday": { color: "#FFB74D", icon: "home-circle-outline" },
+  Holiday: { color: "#FFB74D", icon: "home-circle-outline" },
 };
 
-const status = {
+let status = {
   "2025-04-20": "Present",
   "2025-04-21": "Absent",
   "2025-04-22": "Present",
@@ -60,15 +61,14 @@ function checkDate(dateStr: string): "past" | "today" | "future" {
   }
 }
 
-const InitialDate = 14;
-
 function WeekScreen() {
   const theme = useTheme();
+  const profile = useProfile();
 
   const styles = useMemo(() => stylesInit(theme), [theme]);
 
   const [visible, setVisible] = useState(false);
-  const [day, setDay] = useState("Mon");
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
@@ -90,29 +90,36 @@ function WeekScreen() {
         >
           <Card style={styles.card}>
             <Card.Title
-              title={`Mark ${
-                InitialDate + Object.keys(status).indexOf(day)
-              }th - ${day} as`}
+              title={`Mark ${date} as`}
               titleStyle={{ textAlign: "center" }}
             />
-            {/* <Card.Content style={{ gap: 5 }}> */}
-            {/* {Object.entries(status).map(([key, value], index) => (
-                <Surface key={index} elevation={2} style={{ borderRadius: 8 }}>
-                  <List.Item
-                    title={key.split(" ").slice(1).join(" ")}
-                    titleStyle={{ textAlign: "center" }}
-                    left={(props) => (
-                      <List.Icon
-                        {...props}
-                        icon={data[value].icon}
-                        color={data[value].color}
-                      />
-                    )}
-                    onPress={() => console.log(`Selected: ${key}`)}
-                  />
-                </Surface>
-              ))} */}
-            {/* </Card.Content> */}
+            <Card.Content style={{ gap: 5 }}>
+              {Object.entries(data)
+                .filter(([key]) => !key.startsWith("Marked"))
+                .map(([key, value], index) => (
+                  <Surface
+                    key={index}
+                    elevation={2}
+                    style={{ borderRadius: 8 }}
+                  >
+                    <List.Item
+                      title={key}
+                      titleStyle={{ textAlign: "center" }}
+                      left={(props) => (
+                        <List.Icon
+                          {...props}
+                          icon={value.icon}
+                          color={value.color}
+                        />
+                      )}
+                      onPress={async () => {
+                        const data = await profile.setStatus(date, key);
+                        console.log(data);
+                      }}
+                    />
+                  </Surface>
+                ))}
+            </Card.Content>
             <Card.Actions>
               <Surface key={0} elevation={2} style={{ borderRadius: 8 }}>
                 <List.Item
@@ -160,10 +167,8 @@ function WeekScreen() {
 
                     if (!["past", "today"].includes(time) && state != "Holiday")
                       state = "Marked " + state;
-                    
-                    console.log(state)
-                    return state;
 
+                    return state;
                   })()}`}
                   titleStyle={{ textAlign: "center" }}
                   left={(props) => (
@@ -174,8 +179,8 @@ function WeekScreen() {
                     />
                   )}
                   onPress={() => {
-                    setVisible(true);
-                    setDay(day);
+                    showModal();
+                    setDate(day);
                   }}
                 />
               </Surface>
@@ -183,6 +188,18 @@ function WeekScreen() {
           </Card.Content>
         </Card>
       </View>
+      <FAB
+        icon="logout"
+        style={{ 
+          position: "absolute",
+          alignSelf: "flex-end",
+          margin: 10,
+          bottom: 0,
+          right: 5
+        }}
+        variant="surface"
+        onPress={console.log}
+      />
     </SafeAreaView>
   );
 }
