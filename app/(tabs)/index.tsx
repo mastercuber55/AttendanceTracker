@@ -7,36 +7,22 @@ import {
   SegmentedButtons,
   Surface,
   List,
-  FAB,
 } from "react-native-paper";
 import { useTheme } from "react-native-paper";
-import { stylesInit } from "../styles";
-import { useEffect, useMemo, useState } from "react";
+import { stylesInit } from "../../styles";
+import { useMemo, useState } from "react";
 import PieChart from "react-native-pie-chart";
-import { useAuth } from "@/utils/auth";
-import useProfile from "@/utils/useProfile";
-import { useRouter } from "expo-router";
 
 export default withTheme(HomeScreen);
 
 const seriesStyle = { fill: "white", fontWeight: "bold", fontSize: 15 };
 
 function HomeScreen() {
-  const { logout } = useAuth();
-  const profile = useProfile();
 
-  const router = useRouter();
   const theme = useTheme();
   const styles = useMemo(() => stylesInit(theme), [theme]);
 
   const [today, setToday] = useState<string>("");
-
-  useEffect(() => {
-    (async () => {
-      const data = await profile.getAttendance()
-      console.log(data)
-    })();
-  }, []);
 
   const series = [
     { value: 67, color: "#4CAF50", label: { text: "Present", ...seriesStyle } },
@@ -96,7 +82,7 @@ function HomeScreen() {
                 const date = new Date().toISOString().split("T")[0];
                 setToday(text);
 
-                const data = await profile.setStatus(date, text);
+                // const data = await profile.setStatus(date, text);
               }}
               style={{ width: "100%" }}
               buttons={[
@@ -133,21 +119,6 @@ function HomeScreen() {
           </Surface>
         </Card>
       </View>
-      <FAB
-        icon="logout"
-        style={{
-          position: "absolute",
-          alignSelf: "flex-end",
-          margin: 10,
-          bottom: 5,
-          right: 5,
-        }}
-        variant="surface"
-        onPress={() => {
-          logout();
-          router.replace("/login");
-        }}
-      />
     </SafeAreaView>
   );
 }

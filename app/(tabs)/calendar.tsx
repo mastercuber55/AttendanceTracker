@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { withTheme, Card, Text, List, Surface, Portal, Modal, Icon  } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
-import { stylesInit } from '../styles';
+import { stylesInit } from '../../styles';
 import { useMemo, useState } from 'react';
 import ProgressBar from '@/components/ProgressBar';
 import { Calendar } from 'react-native-calendars';

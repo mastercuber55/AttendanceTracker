@@ -10,10 +10,9 @@ import {
   FAB,
 } from "react-native-paper";
 import { useTheme } from "react-native-paper";
-import { stylesInit } from "../styles";
+import { stylesInit } from "../../styles";
 import { useEffect, useMemo, useState } from "react";
 import ProgressBar from "@/components/ProgressBar";
-import useProfile from "@/utils/useProfile";
 
 export default withTheme(WeekScreen);
 const seriesStyle = { fill: "white", fontWeight: "bold", fontSize: 15 };
@@ -63,7 +62,6 @@ function checkDate(dateStr: string): "past" | "today" | "future" {
 
 function WeekScreen() {
   const theme = useTheme();
-  const profile = useProfile();
 
   const styles = useMemo(() => stylesInit(theme), [theme]);
 
@@ -113,7 +111,7 @@ function WeekScreen() {
                         />
                       )}
                       onPress={async () => {
-                        const data = await profile.setStatus(date, key);
+                        // const data = await profile.setStatus(date, key);
                         console.log(data);
                       }}
                     />

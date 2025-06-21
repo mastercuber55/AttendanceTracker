@@ -1,9 +1,8 @@
-import { Redirect, Tabs } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { useTheme } from 'react-native-paper';
 import { HapticTab } from '@/components/HapticTab';
 import { Icon } from 'react-native-paper';
 import { setBackgroundColorAsync } from 'expo-navigation-bar';
-import { useAuth } from '@/utils/auth';
 import { useEffect } from 'react';
 
 const data = [
@@ -14,14 +13,10 @@ const data = [
 export default function Layout() {
   
   const theme = useTheme();
-  const { token, loading, logout } = useAuth();
 
-  useEffect(() => {
-    setBackgroundColorAsync(theme.colors.background);
-  }, [theme])
-
-  if (loading) return null; 
-  if (!token) return <Redirect href="/login" />;
+  // useEffect(() => {
+  //   setBackgroundColorAsync(theme.colors.background);
+  // }, [theme])
 
   return (
     <Tabs
@@ -34,6 +29,7 @@ export default function Layout() {
           elevation: 4, // Shadow effect on Android
           shadowOpacity: 0.1, // Light shadow on iOS
           height: 48, // Default is 49 LMFAO
+          paddingBottom: 84
         },
         tabBarLabelStyle: {
           fontSize: 12,
