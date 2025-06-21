@@ -12,6 +12,7 @@ import { useTheme } from "react-native-paper";
 import { stylesInit } from "../../styles";
 import { useMemo, useState } from "react";
 import PieChart from "react-native-pie-chart";
+import Attendance from "@/Attendance";
 
 export default withTheme(HomeScreen);
 
@@ -23,6 +24,8 @@ function HomeScreen() {
   const styles = useMemo(() => stylesInit(theme), [theme]);
 
   const [today, setToday] = useState<string>("");
+
+
 
   const series = [
     { value: 67, color: "#4CAF50", label: { text: "Present", ...seriesStyle } },
@@ -83,6 +86,8 @@ function HomeScreen() {
                 setToday(text);
 
                 // const data = await profile.setStatus(date, text);
+                const result = await Attendance.setDate(date, text)
+                // Implement react native paper snackbar here
               }}
               style={{ width: "100%" }}
               buttons={[
