@@ -7,12 +7,12 @@ import {
   Surface,
   Portal,
   Modal,
-  FAB,
 } from "react-native-paper";
 import { useTheme } from "react-native-paper";
 import { stylesInit } from "../../styles";
 import { useEffect, useMemo, useState } from "react";
 import ProgressBar from "@/components/ProgressBar";
+import Attendance from "@/Attendance";
 
 export default withTheme(WeekScreen);
 const seriesStyle = { fill: "white", fontWeight: "bold", fontSize: 15 };
@@ -24,40 +24,39 @@ interface status {
 
 const data: Record<string, status> = {
   Present: {
-    color: "#4CAF50",
+    color: "lime",
     icon: "checkbox-marked-circle-outline",
   },
-  Absent: { color: "#F44336", icon: "close-circle-outline" },
-  "Marked Present": { color: "#4CAF50", icon: "progress-check" },
-  "Marked Absent": { color: "#F44336", icon: "progress-close" },
-  "Must Go": { color: "#FFC107", icon: "progress-alert" },
-  Holiday: { color: "#FFB74D", icon: "home-circle-outline" },
-};
-
-let status = {
-  "2025-04-20": "Present",
-  "2025-04-21": "Absent",
-  "2025-04-22": "Present",
-  "2025-04-23": "Absent",
-  "2025-04-24": "Must Go",
-  "2025-04-25": "Present",
-  "2025-04-26": "Holiday",
+  Absent: { 
+    color: "#F44336", 
+    icon: "close-circle-outline"
+  },
+  "Marked Present": { 
+    color: "#4CAF50", 
+    icon: "progress-check" 
+  },
+  "Marked Absent": { 
+    color: "#F44336", 
+    icon: "progress-close" 
+  },
+  Important: { 
+    color: "#FFC107", 
+    icon: "progress-alert" 
+  },
+  Holiday: { 
+    color: "#FFB74D", 
+    icon: "home-circle-outline" 
+  },
+  Unmarked: { 
+    color: "grey", 
+    icon: "pause-circle-outline" 
+  }
 };
 
 function checkDate(dateStr: string): "past" | "today" | "future" {
-  const inputDate = new Date(dateStr);
-  const today = new Date();
-
-  inputDate.setHours(0, 0, 0, 0);
-  today.setHours(0, 0, 0, 0);
-
-  if (inputDate.getTime() < today.getTime()) {
-    return "past";
-  } else if (inputDate.getTime() > today.getTime()) {
-    return "future";
-  } else {
-    return "today";
-  }
+  const d = new Date(dateStr), t = new Date();
+  d.setHours(0, 0, 0, 0); t.setHours(0, 0, 0, 0);
+  return d < t ? "past" : d > t ? "future" : "today";
 }
 
 function WeekScreen() {
@@ -70,6 +69,21 @@ function WeekScreen() {
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
+
+  const [status, setStatus] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+   (async () => {
+     const s = await Attendance.getWeek("2025-06-21")
+      for(let [date, state] of s) {
+        if(!state) state = "Unmarked"
+        setStatus(prev => {
+          const updated = { ...prev, [date]: state };
+          return updated;
+        });
+      }
+   })()
+  }, [])
 
   const series = [
     { value: 67, color: "#4CAF50", label: { text: "Present", ...seriesStyle } },
@@ -93,15 +107,15 @@ function WeekScreen() {
             />
             <Card.Content style={{ gap: 5 }}>
               {Object.entries(data)
-                .filter(([key]) => !key.startsWith("Marked"))
-                .map(([key, value], index) => (
+                .filter(([state]) => !state.startsWith("Marked"))
+                .map(([state, value], index) => (
                   <Surface
-                    key={index}
+                    key={state}
                     elevation={2}
                     style={{ borderRadius: 8 }}
                   >
                     <List.Item
-                      title={key}
+                      title={state}
                       titleStyle={{ textAlign: "center" }}
                       left={(props) => (
                         <List.Icon
@@ -111,8 +125,16 @@ function WeekScreen() {
                         />
                       )}
                       onPress={async () => {
-                        // const data = await profile.setStatus(date, key);
-                        console.log(data);
+                        // const data = await profile.setStatus(date, state);
+                        await Attendance.setDate(date, state)
+                        // Implement react native paper snackbar here
+                        
+                        setStatus(prev => {
+                          const updated: Record<string, string> = { ...prev };
+                          updated[date] = state;
+                          return updated;
+                        });
+                        hideModal()
                       }}
                     />
                   </Surface>
@@ -152,7 +174,7 @@ function WeekScreen() {
         <Card style={styles.card}>
           <Card.Title
             title="Decide your holidays."
-            subtitle="Recommended that you take 2/6 Holidays"
+            // subtitle="Recommended that you take 2/6 Holidays"
             titleStyle={{ textAlign: "center" }}
             subtitleStyle={{ textAlign: "center" }}
           />
@@ -160,14 +182,7 @@ function WeekScreen() {
             {Object.entries(status).map(([day, state], index) => (
               <Surface key={index} elevation={2} style={{ borderRadius: 8 }}>
                 <List.Item
-                  title={`${day} - ${(() => {
-                    const time = checkDate(day);
-
-                    if (!["past", "today"].includes(time) && state != "Holiday")
-                      state = "Marked " + state;
-
-                    return state;
-                  })()}`}
+                  title={`${day} - ${state}`}
                   titleStyle={{ textAlign: "center" }}
                   left={(props) => (
                     <List.Icon
@@ -186,18 +201,6 @@ function WeekScreen() {
           </Card.Content>
         </Card>
       </View>
-      <FAB
-        icon="logout"
-        style={{ 
-          position: "absolute",
-          alignSelf: "flex-end",
-          margin: 10,
-          bottom: 0,
-          right: 5
-        }}
-        variant="surface"
-        onPress={console.log}
-      />
     </SafeAreaView>
   );
 }

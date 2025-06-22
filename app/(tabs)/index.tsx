@@ -25,8 +25,6 @@ function HomeScreen() {
 
   const [today, setToday] = useState<string>("");
 
-
-
   const series = [
     { value: 67, color: "#4CAF50", label: { text: "Present", ...seriesStyle } },
     { value: 0, color: "#F44336", label: { text: "Absent", ...seriesStyle } },
@@ -92,7 +90,7 @@ function HomeScreen() {
               style={{ width: "100%" }}
               buttons={[
                 {
-                  value: "present",
+                  value: "Present",
                   label: "Present",
                   icon: "checkbox-marked-circle-outline",
                   style: styles.SegBtn,
@@ -100,7 +98,7 @@ function HomeScreen() {
                   uncheckedColor: theme.colors.onSurface,
                 },
                 {
-                  value: "absent",
+                  value: "Absent",
                   label: "Absent",
                   icon: "close-circle-outline",
                   style: styles.SegBtn,
